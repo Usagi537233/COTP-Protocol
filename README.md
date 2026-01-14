@@ -25,10 +25,8 @@ The core principle of COTP is simple:
 > **No credential should exist in a vacuum.**
 
 - In traditional OTP systems, the user provides a code.
-- In COTP, the server first issues a **challenge**:
-  a unique, high-entropy, short-lived cryptographic value.
-- The client’s proof is not merely a password,
-  but a **targeted response** to that specific challenge.
+- In COTP, the server first issues a **challenge**: a unique, high-entropy, short-lived cryptographic value.
+- The client’s proof is not merely a password, but a **targeted response** to that specific challenge.
 
 Authentication succeeds only when the response is bound to **that exact challenge**, issued **by that server**, **for that interaction**.
 
@@ -36,7 +34,7 @@ Authentication succeeds only when the response is bound to **that exact challeng
 
 ## 2. Dynamic Contextual Binding
 
-COTP rejects the assumption that **time alone is a sufficient security variable**.Authentication in COTP is bound to a **specific interaction context**, not a time window.
+COTP rejects the assumption that **time alone is a sufficient security variable**. Authentication in COTP is bound to a **specific interaction context**, not a time window.
 
 By tying each server-issued challenge to a **unique server identity**, a response becomes valid **only within the exact context and on the exact server where it was requested**.  
 A response issued for one server, one challenge, or one interaction is cryptographically meaningless outside of that context.
@@ -68,7 +66,7 @@ Authorization is granted **only for the duration of a single successful verifica
 - Upon successful verification, the challenge is permanently invalidated.
 - No authorization state persists beyond the immediate interaction.
 
-This model assumes a **hostile network environment**, where credential exposure is possible or even expected.  Instead of preventing exposure, COTP ensures that any captured data is **non-reusable, non-transferable, and immediately obsolete**.
+This model assumes a **hostile network environment**, where credential exposure is possible or even expected. Instead of preventing exposure, COTP ensures that any captured data is **non-reusable, non-transferable, and immediately obsolete**.
 
 Trust is never stored — it is momentarily proven, then discarded.
 
@@ -138,9 +136,31 @@ Instead, it represents an exploration of **pushing security boundaries to their 
 
 ---
 
+## 8. Comparison with OCRA
+
+COTP can be viewed as a **modern, software-focused evolution of the OCRA (OATH Challenge-Response Algorithm) concept** ([RFC 6287](https://www.rfc-editor.org/rfc/rfc6287.html)).  
+Both are challenge-response mechanisms designed to provide one-time, replay-resistant authentication, but COTP emphasizes **strict context binding, ephemeral authorization, and practical deployment for general users**.
+
+Key distinctions:
+
+| Aspect | OCRA | COTP |
+|-------|------|------|
+| Standardization | ✅ OATH Profile standard ([RFC 6287](https://www.rfc-editor.org/rfc/rfc6287.html)) | ❌ Custom implementation, fully aligned with challenge-response principles |
+| Context binding | Optional, profile-dependent | **Mandatory**, each challenge tied to server and interaction |
+| Time dependence | Optional, may include time windows | **No time dependency**, fully interaction-bound |
+| Challenge consumption | Profile-dependent, typically once per verification | **Enforced consume-once** for all challenges |
+| Deployment environment | Can be hardware or software | Purely software-based, designed for broad usability |
+
+In summary:
+
+- **COTP builds on the core principles of OCRA** ([RFC 6287](https://www.rfc-editor.org/rfc/rfc6287.html)): one-time, challenge-bound responses with replay resistance.  
+- **COTP advances these principles** by enforcing strict context binding, ephemeral authorization, and immediate invalidation of challenges, making it highly effective in modern software-only environments.  
+- This design provides **high-assurance authentication** without requiring hardware tokens, specialized clients, or complex standards, while fully maintaining the security guarantees of challenge-response authentication.
+
+---
+
 ## Summary
 
 By replacing static time-based codes with a dynamic, challenge-bound authentication flow, COTP ensures that authorization is never reusable, never ambient, and never passive.
 
-Authentication is no longer a broadcast.  
-It is a negotiation — **one that can only succeed once**.
+Authentication is no longer a broadcast; it is a negotiation — **unique, context-bound, and one-time**.
