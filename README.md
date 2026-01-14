@@ -2,7 +2,7 @@
 
 COTP is a **challenge-response–based authentication mechanism** designed to eliminate the inherent replay and phishing weaknesses of traditional time-based OTP systems.
 
-Unlike passive OTP schemes that generate credentials in isolation,COTP enforces an **interactive, context-bound handshake** between client and server.
+Unlike passive OTP schemes that generate credentials in isolation, COTP enforces an **interactive, context-bound handshake** between client and server.
 
 ---
 
@@ -25,7 +25,7 @@ The core principle of COTP is simple:
 > **No credential should exist in a vacuum.**
 
 - In traditional OTP systems, the user provides a code.
-- In COTP, the server first issues a **Challenge**:
+- In COTP, the server first issues a **challenge**:
   a unique, high-entropy, short-lived cryptographic value.
 - The client’s proof is not merely a password,
   but a **targeted response** to that specific challenge.
@@ -36,36 +36,41 @@ Authentication succeeds only when the response is bound to **that exact challeng
 
 ## 2. Dynamic Contextual Binding
 
-COTP rejects the assumption that **time alone is a sufficient security variable**.
+COTP rejects the assumption that **time alone is a sufficient security variable**.Authentication in COTP is bound to a **specific interaction context**, not a time window.
 
-By incorporating a server-generated challenge into the authentication process,
-COTP binds user presence to a **specific interaction context** rather than
-a generic time window.
+By tying each server-issued challenge to a **unique server identity**, a response becomes valid **only within the exact context and on the exact server where it was requested**.  
+A response issued for one server, one challenge, or one interaction is cryptographically meaningless outside of that context.
+
+This design prevents credentials from being transferable across servers or sessions, effectively mitigating replay and man-in-the-middle attacks.
 
 ### Redefining “Once”
 
 In COTP, *“One-Time”* does **not** mean:
 
 - “Once every 30 seconds”
-- “Valid within a time slice”
+- “Valid within a predefined time slice”
 
 It means:
 
-> **“Valid only for this exact challenge, right here, right now.”**
+> **“Valid only for this exact interaction — on this server, for this challenge, at this moment.”**
 
-A response generated for one challenge is cryptographically useless for any other.
+A response generated for one context has no value in any other, even if fully intercepted by an attacker.
 
 ---
 
 ## 3. Ephemeral Authorization (Zero-Persistence Trust)
 
-COTP is designed around **ephemeral authorization**.
+COTP operates on a model of **ephemeral authorization**.
 
-- Each challenge is valid for **exactly one successful verification**.
-- Once consumed, the challenge is permanently invalidated.
-- Any captured credential—challenge, proof, or full request—becomes immediately worthless after use.
+Authorization is granted **only for the duration of a single successful verification**.
 
-This model assumes a hostile network environment and treats credential exposure as inevitable, but **non-repeatable**.
+- Each challenge may be used exactly once.
+- Upon successful verification, the challenge is permanently invalidated.
+- No authorization state persists beyond the immediate interaction.
+
+This model assumes a **hostile network environment**, where credential exposure is possible or even expected.  Instead of preventing exposure, COTP ensures that any captured data is **non-reusable, non-transferable, and immediately obsolete**.
+
+Trust is never stored — it is momentarily proven, then discarded.
 
 ---
 
@@ -73,7 +78,7 @@ This model assumes a hostile network environment and treats credential exposure 
 
 COTP minimizes server-side state without sacrificing replay resistance.
 
-While challenges may be cryptographically signed to prevent tampering,the server **must enforce a consume-once semantic** to guarantee true non-replayability.
+While challenges may be cryptographically protected to prevent tampering, the server **must enforce a consume-once semantic** to guarantee true non-replayability.
 
 This is typically achieved via:
 
@@ -106,7 +111,7 @@ Replay resistance is enforced **server-side**, not delegated to client behavior 
 | Feature | TOTP | COTP |
 |------|------|------|
 | Credential generation | Passive | **Interactive** |
-| Trust anchor | Time | **Server-issued challenge** |
+| Trust root | Time | **Server-issued challenge** |
 | Replay window | Yes | **None** |
 | Context binding | No | **Yes** |
 | Challenge consumption | N/A | **Exactly once** |
@@ -116,7 +121,7 @@ Replay resistance is enforced **server-side**, not delegated to client behavior 
 
 ## 7. Relationship to WebAuthn
 
-COTP and WebAuthn share a common philosophical foundation:
+COTP and WebAuthn share a common philosophical foundation:  
 **challenge-response authentication with replay resistance**.
 
 Key differences:
@@ -128,16 +133,14 @@ Key differences:
 | Deployment complexity | Low | Medium–High |
 | Browser API dependency | None | Required |
 
-COTP does **not** aim to replace WebAuthn.
-COTP does not aim to replace WebAuthn. Instead, it represents an exploration of **pushing security boundaries to their limits within the constraints of pure HTTP and software-based environments**, offering a high-security alternative where hardware-backed trust roots are not viable.
+COTP does **not** aim to replace WebAuthn.  
+Instead, it represents an exploration of **pushing security boundaries to their limits within the constraints of pure HTTP and software-based environments**, offering a high-security alternative where hardware-backed trust roots are not viable.
 
 ---
 
 ## Summary
 
-By replacing static time-based codes with a dynamic,
-challenge-bound authentication flow, COTP ensures that
-authorization is never reusable, never ambient, and never passive.
+By replacing static time-based codes with a dynamic, challenge-bound authentication flow, COTP ensures that authorization is never reusable, never ambient, and never passive.
 
-Authentication is no longer a broadcast.
-It is a negotiation—**one that can only succeed once**.
+Authentication is no longer a broadcast.  
+It is a negotiation — **one that can only succeed once**.
