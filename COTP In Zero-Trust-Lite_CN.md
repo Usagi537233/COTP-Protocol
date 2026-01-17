@@ -1,5 +1,7 @@
 # COTP 在 [Zero-Trust-Lite (ZTL)](https://github.com/Usagi537233/Zero-Trust-Lite/tree/main) 文档
 
+[ENG](https://github.com/Usagi537233/COTP-Protocol/blob/main/COTP%20In%20Zero-Trust-Lite.md)
+
 ### [公共 COTP 计算器网页](https://cotp.537233.xyz/)
 
 ### 如果你是 [ipm专业站](https://ipm.537233.xyz/) 的用户，可以访问你自己的路径 `/cotp`，例如：`https://ipm.537233.xyz/yourpath/cotp`。
