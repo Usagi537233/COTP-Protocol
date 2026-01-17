@@ -1,5 +1,7 @@
 # COTP in [Zero-Trust-Lite (ZTL)](https://github.com/Usagi537233/Zero-Trust-Lite/tree/main) Documentation
 
+[中文](https://github.com/Usagi537233/COTP-Protocol/blob/main/COTP%20In%20Zero-Trust-Lite_CN.md)
+
 ### [Pubilc COTP Calculator Web](https://cotp.537233.xyz/)
 
 ### If you are a user of the [ipm pro site](https://ipm.537233.xyz/),you can access the your path/cotp ,just like https://ipm.537233.xyz/yourpath/cotp .
