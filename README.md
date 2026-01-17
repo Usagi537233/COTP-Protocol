@@ -5,6 +5,9 @@ COTP is a **challenge-response–based authentication mechanism** designed to el
 Unlike passive OTP schemes that generate credentials in isolation, COTP enforces an **interactive, context-bound handshake** between client and server.
 
 ---
+[COTP In Zero-Trust-Lite](https://github.com/Usagi537233/COTP-Protocol/blob/main/COTP%20In%20Zero-Trust-Lite.md)
+
+---
 
 ## Philosophy: Active Defense
 
